@@ -1,4 +1,5 @@
 import { SelectShortenDemoComponent } from './select-shorten-demo.component';
+import { ShortenSelectPipe } from "./select-shorten.pipe";
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }           from '@angular/platform-browser';
@@ -13,7 +14,7 @@ describe('SelectShortenDemoComponent', function () {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectShortenDemoComponent ],
+      declarations: [ SelectShortenDemoComponent, ShortenSelectPipe ],
     })
     .compileComponents();
   }));

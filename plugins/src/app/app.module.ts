@@ -3,14 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { SelectShortenDemoComponent } from './select-shorten-demo.component';
-import { ShortenSelectPipe } from "./select-shorten.pipe";
+import { SelectShortenPipe } from "./select-shorten.pipe";
 
 @NgModule({
   imports:      [ BrowserModule ],
   declarations: [ 
     AppComponent, 
     SelectShortenDemoComponent,
-    ShortenSelectPipe,
+    SelectShortenPipe,
   ],
   bootstrap:    [ AppComponent ]
 })

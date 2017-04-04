@@ -19,7 +19,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 // TODO: Determine if pipe can read css style: max-width. It doesn't seem like the right way to think about Angular development. Expecting that maxChars can only come from a mandatory pipe argument.
 
 @Pipe({name: 'shortenSelect'})
-export class ShortenSelectPipe implements PipeTransform {
+export class SelectShortenPipe implements PipeTransform {
     transform(text: string, maxChars: number, reverseEllipsis: boolean): string {
         let doReverse = (typeof reverseEllipsis === 'undefined') ? false : reverseEllipsis;
         const textLen: number = text.length;

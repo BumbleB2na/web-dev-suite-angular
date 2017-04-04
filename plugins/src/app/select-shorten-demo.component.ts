@@ -8,7 +8,7 @@ import { Component } from "@angular/core";
                 <h1>Angular Pipe - Shorten Select Element</h1>
             </header>
             <p>
-                Select option text can expand beyond css max-width settings. Using custom angular pipe, 'shortenText' the select option text can be restricted to a maximum number of characters. If text is shortened, it is truncated and ellipsis, '...' will be prepended to the beginning.
+                Using custom angular pipe, 'shortenText' to restrict any text to a maximum number of characters. If text is shortened, it is truncated and an ellipsis, '...' will be prepended to the beginning.
             </p>
             <p>
                 <i>Check it out: </i>
@@ -18,6 +18,23 @@ import { Component } from "@angular/core";
                     <option title="Long item text that is too long to fit inside a select option" value="2">{{ "Long item text that is too long to fit inside a select option" | shortenSelect:20 }}</option>
                     <option title="Short item text" value="3">{{ "Short item text" | shortenSelect:20 }}</option>
                 </select>
+            </p>
+            <p>
+                <b>Note:</b> Hovering your mouse over any shortened option text will reveal the complete option text in a tooltip (on browsers that support the 'title' attribute).
+            </p>
+        </article>
+
+        <article>
+            <header>
+                <h1>Angular Component - Shorten Select Element</h1>
+            </header>
+            <p>
+                Select option text can expand beyond css max-width settings. Using custom angular component, ShortenTextComponent, the select options' text can be restricted to a max width. If text is shortened, it is truncated and ellipsis, '...' will be prepended to the beginning.
+            </p>
+            <p>
+                <i>Check it out: </i>
+                <select-shorten [(maxWidth)]="maxWidthPx"></select-shorten>
+                <span *ngIf="maxWidthPx" [style.max-width.px]="maxWidthPx"> max-width: {{maxWidthPx}}px</span>
             </p>
             <p>
                 <b>Note:</b> Hovering your mouse over any shortened option text will reveal the complete option text in a tooltip (on browsers that support the 'title' attribute).

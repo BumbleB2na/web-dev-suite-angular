@@ -21,7 +21,7 @@
     "lint": "tslint ./src/**/*.ts -t verbose"
   },
   "keywords": [],
-  "author": "",
+  "author": "Brendan Barr",
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~4.0.0",
@@ -58,9 +58,6 @@
 
     "@types/node": "^6.0.46",
     "@types/jasmine": "2.5.36"
-  },
-  "engines": {
-    "node": "8.2.1"
   },
   "repository": {}
 }

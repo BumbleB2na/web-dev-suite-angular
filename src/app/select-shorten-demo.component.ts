@@ -1,52 +1,62 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
     selector: 'select-shorten-demo',
     template: `
         <article>
             <header>
-                <h1>CSS Problem</h1>
+                <h1>CSS/Html problem to solve</h1>
             </header>
             <p>
-                CSS problem: Select &lt;option&gt; text can expand beyond css max-width settings. This causes a &lt;select&gt; input element to become longer than we want. Select elements are not responsive so this behaviour can break user interfaces.
-            </p>
-            <p>
-                See this example where the "260 pixels wide" block shows what the width of the &lt;selection&gt; element should reach at maximum:
+                Text within &lt;select&gt; children &lt;option&gt; elements may be too long, causing unwanted results in the UI. By default &lt;select&gt; elements are not responsive. This part of the problem is easily solved by setting <i>max-width:100%;</i> css on the &lt;select&gt; element.
             </p>
             <div style="max-width:260px;border:10px solid #ccc;background-colour:#ccc;padding:0 10px;">
                 <p>
-                    260 pixel wide container
+                    <i>Try it out:</i>
                 </p>
                 <p>
-                    <select style="max-width:350px;">
-                        <option value="0" disabled>Please select an item</option>
-                        <option title="Short item text" value="1">Short item text</option>
-                        <option title="Long item text that is too long to fit inside a select option" value="2">Long item text that is too long to fit inside a select option</option>
-                        <option title="Short item text" value="3">Short item text</option>
+                    <button *ngIf="!maxWidthPerc" (click)="changeMaxWidthPerc(100)" title="Set max-width to 100%">Set max-width:100%</button>
+                    <button *ngIf="maxWidthPerc" (click)="changeMaxWidthPerc()" title="Remove max-width style">Remove max-width</button>
+                    <br /><br />
+                    <select [style.max-width.%]="maxWidthPerc">
+                        <option title="Item with text that is too long to fit inside a select option" value="1">Item with text that is too long to fit inside a select option</option>
+                        <option title="Item 2" value="2">Item 2</option>
+                        <option title="Item 3" value="3">Item 3</option>
+                        <option title="Item 4" value="4">Item 4</option>
+                        <option title="Item 5" value="5">Item 5</option>
                     </select>
+                    <span *ngIf="maxWidthPerc" [style.max-width.%]="maxWidthPerc"><br />&lt;select&gt; max-width at: {{maxWidthPerc}}%</span>
                 </p>
             </div>
             <p>
-                Pure Javascript solution: We could use javascript or jquery to check if the length of string goes beyond number of characters then, truncate. It helps to show where text was truncated by prepending or appending ellipsis (...).
+                However, making the &lt;select&gt; responsive did not solve all of our problems. We still have these issues to deal with:
+            </p>
+            <ul>
+                <li>When option text that is too long is the selected value it is not easily readable.</li>
+                <li>The drop down list of the select element is as wide as the longest option text.</li>
+            </ul>
+            <p>
+                We could solve this by truncating the option text that is too long. If we were writing a pure Javascript solution we check if the length of text in any option goes beyond a number of characters then, truncate. But, we're after an Angular solution here.
             </p>
         </article>
         <article>
             <header>
-                <h1>Angular Pipe Solution: Shorten Option Text</h1>
+                <h1>Angular pipe solution:</h1>
             </header>
             <p>
-                Shorten any string using custom angular pipe, 'shortenText' to restrict it to a maximum number of characters. If text is shortened, it is truncated and an ellipsis, '...' will be prepended to the beginning.
+                Shorten any string using custom angular pipe, 'shortenText' to restrict it to a maximum number of characters. If text is shortened, it is truncated and an ellipsis, '...' will be prepended to the beginning. Optionally the truncation can be reversed to the end with a config setting.
             </p>
             <div style="max-width:260px;border:10px solid #ccc;background-colour:#ccc;padding:0 10px;">
                 <p>
-                    <i>Try it out: </i>
+                    <i>&lt;option&gt; text shortened with pipe:</i>
                 </p>
                 <p>
-                    <select style="max-width:350px;">
-                        <option value="0" disabled>Please select an item</option>
-                        <option title="Short item text" value="1">{{ "Short item text" | shortenText:35 }}</option>
-                        <option title="Long item text that is too long to fit inside a select option" value="2">{{ "Long item text that is too long to fit inside a select option" | shortenText:35 }}</option>
-                        <option title="Short item text" value="3">{{ "Short item text" | shortenText:35 }}</option>
+                    <select style="max-width:100%;" class="select-pipe-demo">
+                        <option title="Item with text that is too long to fit inside a select option" value="1">{{ "Item with text that is too long to fit inside a select option" | shortenText:35 }}</option>
+                        <option title="Item 2" value="2">{{ "Item 2" | shortenText:35 }}</option>
+                        <option title="Item 3" value="3">{{ "Item 3" | shortenText:35 }}</option>
+                        <option title="Item 4" value="4">{{ "Item 4" | shortenText:35 }}</option>
+                        <option title="Item 5" value="5">{{ "Item 5" | shortenText:35 }}</option>
                     </select>
                 </p>
             </div>
@@ -57,18 +67,21 @@ import { Component } from "@angular/core";
 
         <article>
             <header>
-                <h1>Angular Component Solution: Shorten Select Element</h1>
+                <h1>angular component solution:</h1>
             </header>
             <p>
-                Use custom angular component, ShortenTextComponent. The select options' text can be restricted to a max width. If text is shortened, it is truncated and ellipsis, '...' will be prepended to the beginning.
+                Use custom angular component, SelectShortenComponent. How this works is that when a css <i>max-width</i> is set on a &lt;select&gt; element it calculates what the maximum number of characters should be - the catch is that the <i>max-width</i> css must be in pixels and not percent so, the width of its container in pixels must be known - e.g. <i>max-width: 260px</i>. Each child &lt;option&gt; element text can be restricted to a calculated number of characters determined by a <i>maxWidth</i> attribute on custom &lt;select-shorten&gt; element. When text is shortened by the component it is truncated and ellipsis, '...' is prepended to the beginning. Optionally the truncation can be reversed to the end with a <i>reverseEllipsis</i> attribute.
             </p>
             <div style="max-width:260px;border:10px solid #ccc;background-colour:#ccc;padding:0 10px;">
                 <p>
-                    <i>Try it out: </i>
+                    <i>Try the &lt;select-shorten&gt; component:</i>
                 </p>
                 <p>
-                    <select-shorten [(maxWidth)]="maxWidthPx"></select-shorten>
-                    <span *ngIf="maxWidthPx" [style.max-width.px]="maxWidthPx"><br /><br />max-width at: {{maxWidthPx}}px</span>
+                    <button *ngIf="!maxWidth" (click)="changeMaxWidth(260)" title="Set max-width to 260px">Set max-width:260px</button>
+                    <button *ngIf="maxWidth" (click)="changeMaxWidth()" title="Remove max-width style">Remove max-width</button>
+                    <br /><br />
+                    <select-shorten [maxWidth]="maxWidth"></select-shorten>
+                    <span *ngIf="maxWidth" [style.max-width.px]="maxWidth"><br />&lt;select&gt; max-width at: {{maxWidth}}px</span>
                 </p>
             </div>
             <p>
@@ -78,4 +91,18 @@ import { Component } from "@angular/core";
     `,
     //templateUrl: './select-shorten-demo.component.html' - For some reason templateUrl is failing in Karma tests even with beforeEach(async()) so, using inline templates until I can resolve it
 })
-export class SelectShortenDemoComponent { }
+export class SelectShortenDemoComponent {
+    @Input() maxWidth: number | string;
+    @Input() maxWidthPerc: number | string;
+	@Output() maxWidthChange = new EventEmitter<number>();
+	@Output() maxWidthChangePerc = new EventEmitter<number>();
+
+    changeMaxWidth(width?: number) {
+        this.maxWidth = width;
+        this.maxWidthChange.emit(this.maxWidth);
+    }
+    changeMaxWidthPerc(width?: number) {
+        this.maxWidthPerc = width;
+        this.maxWidthChangePerc.emit(this.maxWidthPerc);
+    }
+}

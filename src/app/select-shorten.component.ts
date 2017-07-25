@@ -3,17 +3,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
     selector: 'select-shorten',
     template: `
-        <button *ngIf="!maxWidth" (click)="changeMaxWidth(260)" title="Reduce max-width to 260px">Set max-width</button>
-        <button *ngIf="maxWidth" (click)="changeMaxWidth()" title="Reset max-width style">Remove max-width</button>
-        <br /><br />
         <select [style.max-width.px]="maxWidth">
-            <option value="0" disabled>Please select an item</option>
             <option *ngFor="let option of options" [value]="option.value" [innerText]="shortenOptionText(option.innerText)" [title]="option.innerText"></option>
         </select>
     `
 })
 export class SelectShortenComponent {
-	@Input() maxWidth: number | string;
+    @Input() maxWidth: number | string;
+    @Input() reverseEllipsis: boolean | string;
 	@Output() maxWidthChange = new EventEmitter<number>();
 
     options = OPTIONS;
@@ -40,9 +37,11 @@ export class SelectShortenComponent {
 }
 
 const OPTIONS: Option[] = [
-    { value:1, innerText:"Short item text" },
-    { value:2, innerText:"Long item text that is too long to fit inside a select option" },
-    { value:3, innerText:"Short item text" },
+    { value:1, innerText:"Item with text that is too long to fit inside a select option" },
+    { value:2, innerText:"Item 2" },
+    { value:3, innerText:"Item 3" },
+    { value:4, innerText:"Item 4" },
+    { value:5, innerText:"Item 5" },
 ];
 export class Option {
     value: number;

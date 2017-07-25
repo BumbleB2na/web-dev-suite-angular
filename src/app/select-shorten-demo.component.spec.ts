@@ -26,7 +26,7 @@ describe('SelectShortenDemoComponent', function () {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectShortenDemoComponent);
     comp = fixture.componentInstance;
-    de = fixture.debugElement.query(By.css('select'));
+    de = fixture.debugElement.query(By.css('select.select-pipe-demo'));
     el = de.nativeElement;
     
     de2 = fixture.debugElement.query(By.css('select-shorten'));
@@ -40,44 +40,38 @@ describe('SelectShortenDemoComponent', function () {
   });
 
 
-  // FIRST SELECT ELEMENT TESTS:
-
-  it('should have expected <select> css style', () => {
+  // PIPE SOLUTION TESTS - FIRST SELECT ELEMENT IN DOM:
+  
+  it('should not shorten second option text', () => {
     fixture.detectChanges();
-    expect(el.style['max-width']).toMatch(/350px/i,
-      '<select> should have css style: "max-width:350px;"');
+    const secondOption = el.getElementsByTagName('option')[1];
+    expect(secondOption.innerText).toMatch(/Item 2/i,
+      'second <option> should have text: "Item 2"');
+  });
+  
+  it('should shorten first option text', () => {
+    fixture.detectChanges();
+    const firstOption = el.getElementsByTagName('option')[0];
+    expect(firstOption.innerText).not.toMatch(/Item with text that is too long to fit inside a select option/i,
+      'first <option> should NOT have text: "Item with text that is too long to fit inside a select option"');
+  });
+  
+  it('should prepend ellipsis to first option text', () => {
+    fixture.detectChanges();
+    const firstOption = el.getElementsByTagName('option')[0];
+    expect(firstOption.innerText.substr(0, 3)).toMatch(/\.\.\./i,
+      'first <option> should have ellipsis, "..." prepended to the start of text');
   });
 
-  it('should not shorten first option text', () => {
+  it('should display complete, non-shorted option text in first option title attribute', () => {
     fixture.detectChanges();
-    const firstOption = el.getElementsByTagName('option')[1];
-    expect(firstOption.innerText).toMatch(/Short item text/i,
-      'first <option> should have text: "Short item text"');
-  });
-
-  it('should shorten second option text', () => {
-    fixture.detectChanges();
-    const secondOption = el.getElementsByTagName('option')[2];
-    expect(secondOption.innerText).not.toMatch(/Long item text that is too long to fit inside a select option/i,
-      'second <option> should NOT have text: "Long item text that is too long to fit inside a select option"');
-  });
-
-  it('should prepend ellipsis to second option text', () => {
-    fixture.detectChanges();
-    const secondOption = el.getElementsByTagName('option')[2];
-    expect(secondOption.innerText.substr(0, 3)).toMatch(/\.\.\./i,
-      'second <option> should have ellipsis, "..." prepended to the start of text');
-  });
-
-  it('should display complete, non-shorted option text in second option title attribute', () => {
-    fixture.detectChanges();
-    const secondOption = el.getElementsByTagName('option')[2];
-    expect(secondOption.getAttribute('title')).toMatch(/Long item text that is too long to fit inside a select option/i,
-      'second <option> should contain this value in its title attribute: "Long item text that is too long to fit inside a select option"');
+    const firstOption = el.getElementsByTagName('option')[0];
+    expect(firstOption.getAttribute('title')).toMatch(/Item with text that is too long to fit inside a select option/i,
+      'first <option> should contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
   });
 
 
-  // SECOND SELECT ELEMENT TESTS:
+  // COMPONENT SOLUTION TESTS - FIRST SELECT ELEMENT IN DOM:
 
   it('should not yet have expected <select> css style', () => {
     fixture.detectChanges();
@@ -85,35 +79,35 @@ describe('SelectShortenDemoComponent', function () {
       '<select> should not yet have css style: "max-width:260px;"');
   });
 
-  it('should not yet shorten second option text', () => {
+  it('should not yet shorten first option text', () => {
     fixture.detectChanges();
-    const secondOption = el2.getElementsByTagName('option')[2];
-    expect(secondOption.innerText).toMatch(/Long item text that is too long to fit inside a select option/i,
-      'second <option> should contain this value in its title attribute: "Long item text that is too long to fit inside a select option"');
+    const firstOption = el2.getElementsByTagName('option')[0];
+    expect(firstOption.innerText).toMatch(/Item with text that is too long to fit inside a select option/i,
+      'first <option> should contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
   });
   
-  it('should shorten second option text when max-width changed', () => {
+  it('should shorten first option text when max-width changed', () => {
     de2.componentInstance.changeMaxWidth(260);
     fixture.detectChanges();
     const select = el2.getElementsByTagName('select')[0];
     expect(select.style.maxWidth).toMatch(/260px/i,
       '<select> should have css style: "max-width: 260px;"');
-    const secondOption = el2.getElementsByTagName('option')[2];
-    expect(secondOption.innerText).not.toMatch(/Long item text that is too long to fit inside a select option/i,
-      'second <option> should no longer contain this value in its title attribute: "Long item text that is too long to fit inside a select option"');
-    expect(secondOption.getAttribute('title')).toMatch(/Long item text that is too long to fit inside a select option/i,
-      'second <option> should contain this value in its title attribute: "Long item text that is too long to fit inside a select option"');
+    const firstOption = el2.getElementsByTagName('option')[0];
+    expect(firstOption.innerText).not.toMatch(/Item with text that is too long to fit inside a select option/i,
+      'first <option> should no longer contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
+    expect(firstOption.getAttribute('title')).toMatch(/Item with text that is too long to fit inside a select option/i,
+      'first <option> should contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
   });
   
-  it('should revert back second option text when max-width removed', () => {
+  it('should revert back first option text when max-width removed', () => {
     de2.componentInstance.changeMaxWidth();
     fixture.detectChanges();
     const select = el2.getElementsByTagName('select')[0];
     expect(select.style.maxWidth).not.toMatch(/260px/i,
       '<select> should no longer have a "max-width" css style');
-    const secondOption = el2.getElementsByTagName('option')[2];
-    expect(secondOption.innerText).toMatch(/Long item text that is too long to fit inside a select option/i,
-      'second <option> should contain this value in its title attribute: "Long item text that is too long to fit inside a select option"');
+    const firstOption = el2.getElementsByTagName('option')[0];
+    expect(firstOption.innerText).toMatch(/Item with text that is too long to fit inside a select option/i,
+      'first <option> should contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
   });
 
 });

@@ -3,12 +3,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
     selector: 'select-shorten',
     template: `
+        <button *ngIf="!maxWidth" (click)="changeMaxWidth(260)" title="Reduce max-width to 260px">Set max-width</button>
+        <button *ngIf="maxWidth" (click)="changeMaxWidth()" title="Reset max-width style">Remove max-width</button>
+        <br /><br />
         <select [style.max-width.px]="maxWidth">
             <option value="0" disabled>Please select an item</option>
             <option *ngFor="let option of options" [value]="option.value" [innerText]="shortenOptionText(option.innerText)" [title]="option.innerText"></option>
         </select>
-        <button *ngIf="!maxWidth" (click)="changeMaxWidth(260)" title="Reduce max-width to 260px">Set max-width</button>
-        <button *ngIf="maxWidth" (click)="changeMaxWidth()" title="Reset max-width style">Remove max-width</button>
     `
 })
 export class SelectShortenComponent {

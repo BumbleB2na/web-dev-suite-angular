@@ -1,7 +1,7 @@
 {
-  "name": "angular-ui-plugins",
+  "name": "angular-quickstart",
   "version": "1.0.0",
-  "description": "Angular UI Plugins - Uses Angular2 QuickStart package.json, supplemented with testing support",
+  "description": "QuickStart package.json from the documentation, supplemented with testing support",
   "scripts": {
     "build": "tsc -p src/",
     "build:watch": "tsc -p src/ -w",
@@ -21,7 +21,7 @@
     "lint": "tslint ./src/**/*.ts -t verbose"
   },
   "keywords": [],
-  "author": "Brendan Barr",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~4.0.0",

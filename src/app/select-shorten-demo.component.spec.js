@@ -11,6 +11,8 @@ describe('SelectShortenDemoComponent', function () {
     var el;
     var de2;
     var el2;
+    var de3;
+    var el3;
     beforeEach(testing_1.async(function () {
         testing_1.TestBed.configureTestingModule({
             declarations: [select_shorten_demo_component_1.SelectShortenDemoComponent, select_shorten_pipe_1.SelectShortenPipe, select_shorten_component_1.SelectShortenComponent],
@@ -61,16 +63,18 @@ describe('SelectShortenDemoComponent', function () {
         expect(firstOption.innerText).toMatch(/Item with text that is too long to fit inside a select option/i, 'first <option> should contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
     });
     it('should shorten first option text when max-width changed', function () {
-        de2.componentInstance.changeMaxWidth(260);
+        //de2.componentInstance.changeMaxWidth(260);  //method used to live inside SelectShortenComponent
+        comp.changeMaxWidth(260); //run method on SelectShortenDemoComponent
         fixture.detectChanges();
         var select = el2.getElementsByTagName('select')[0];
-        expect(select.style.maxWidth).toMatch(/260px/i, '<select> should have css style: "max-width: 260px;"');
+        expect(select.style.maxWidth).toMatch(/260px/i, '<select> should have css style: "max-width:260px;"');
         var firstOption = el2.getElementsByTagName('option')[0];
         expect(firstOption.innerText).not.toMatch(/Item with text that is too long to fit inside a select option/i, 'first <option> should no longer contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
         expect(firstOption.getAttribute('title')).toMatch(/Item with text that is too long to fit inside a select option/i, 'first <option> should contain this value in its title attribute: "Item with text that is too long to fit inside a select option"');
     });
     it('should revert back first option text when max-width removed', function () {
-        de2.componentInstance.changeMaxWidth();
+        //de2.componentInstance.changeMaxWidth();  //method used to live inside SelectShortenComponent
+        comp.changeMaxWidth(); //run method on SelectShortenDemoComponent
         fixture.detectChanges();
         var select = el2.getElementsByTagName('select')[0];
         expect(select.style.maxWidth).not.toMatch(/260px/i, '<select> should no longer have a "max-width" css style');

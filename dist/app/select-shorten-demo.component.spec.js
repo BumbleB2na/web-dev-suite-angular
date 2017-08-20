@@ -154,5 +154,4 @@ describe('SelectShortenDemoComponent', function () {
         });
     });
 });
-
 //# sourceMappingURL=select-shorten-demo.component.spec.js.map

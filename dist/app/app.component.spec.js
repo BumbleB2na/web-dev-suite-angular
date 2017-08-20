@@ -44,5 +44,4 @@ describe('AppComponent', function () {
         expect(comp).toBeDefined();
     });
 });
-
 //# sourceMappingURL=app.component.spec.js.map

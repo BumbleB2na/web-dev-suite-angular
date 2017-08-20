@@ -5,6 +5,7 @@ const gulp = require('gulp');
 const del = require('del');
 const typescript = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
+const rename = require('gulp-rename');
 const tscConfig = require('./src/tsconfig.json');
 
 // clean the contents of the distribution directory
@@ -50,18 +51,31 @@ gulp.task('compile', ['copy:libs'], function () {
 });
 
 
-// copy static assets (non-TypeScript and non-spec files) from base src/app directory
-gulp.task('copy:assets', ['compile'], function() {
+// copy static app assets (non-TypeScript and non-spec files) from base src/app directory
+// gulp.task('copy:app-assets', ['compile'], function() {
+//     return gulp
+//       .src(['src/app/**/*', '!src/app/**/*.ts', '!src/app/**/*.spec.*'])
+//       .pipe(gulp.dest('dist/app'))
+// });
+// copy static app assets (including TypeScript and Spec files) from base src/app directory
+gulp.task('copy:app-assets', ['compile'], function() {
     return gulp
-      .src(['src/app/**/*', '!src/app/**/*.ts', '!src/app/**/*.spec.*'])
+      .src(['src/app/**/*'])
       .pipe(gulp.dest('dist/app'))
 });
 // copy static assets (non-TypeScript files) from base src directory
-gulp.task('copy:assets2', ['copy:assets'], function() {
+gulp.task('copy:root-assets', ['copy:app-assets'], function() {
     return gulp
       .src(['src/index.html', 'src/favicon.ico', 'src/styles.css', 'src/main.js', 'src/main.js.map', 'src/systemjs*.js', 'src/tsconfig.json'])
       .pipe(gulp.dest('dist'))
 });
+// copy alternate "dist" version of index.html (index.dist.html) from base src directory and rename it to index.html after copy
+gulp.task('copy:index-dist-asset', ['copy:root-assets'], function() {
+    return gulp
+      .src(['src/index.dist.html'])
+      .pipe(rename('index.html'))
+      .pipe(gulp.dest('dist'))
+});
 
-gulp.task('build', ['copy:assets2']);
+gulp.task('build', ['copy:index-dist-asset']);
 gulp.task('default', ['build']);

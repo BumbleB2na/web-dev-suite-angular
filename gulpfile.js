@@ -63,10 +63,16 @@ gulp.task('copy:app-assets', ['compile'], function() {
       .src(['src/app/**/*'])
       .pipe(gulp.dest('dist/app'))
 });
-// copy static assets (non-TypeScript files) from base src directory
+// copy static assets (non-TypeScript files and not dist version of index.html) from base src directory
+// gulp.task('copy:root-assets', ['copy:app-assets'], function() {
+//     return gulp
+//       .src(['src/*', '!src/index.dist.html', '!src/*.ts', '!src/*.spec.*'])
+//       .pipe(gulp.dest('dist'))
+// });
+// copy static assets (including TypeScript files) from base src directory
 gulp.task('copy:root-assets', ['copy:app-assets'], function() {
     return gulp
-      .src(['src/index.html', 'src/favicon.ico', 'src/styles.css', 'src/main.js', 'src/main.js.map', 'src/systemjs*.js', 'src/tsconfig.json'])
+      .src(['src/*', '!src/index.dist.html'])
       .pipe(gulp.dest('dist'))
 });
 // copy alternate "dist" version of index.html (index.dist.html) from base src directory and rename it to index.html after copy
